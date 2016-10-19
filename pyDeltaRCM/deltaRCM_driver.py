@@ -69,8 +69,8 @@ class pyDeltaRCM(Tools):
         self._time_step = 1.
         
         self.verbose = True
-        self.init_logger()
         self.input_file = input_file
+        self.init_logger()
         
         self.create_dicts()
         self.set_defaults()

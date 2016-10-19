@@ -23,7 +23,7 @@ class Tools(object):
 
         # create the logging file handler
         st = timestr = time.strftime("%Y%m%d-%H%M%S")
-        fh = logging.FileHandler("pyDeltaRCM_" + st + ".log")
+        fh = logging.FileHandler("pyDeltaRCM_" + self.site_prefix + st + ".log")
 
         formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
         fh.setFormatter(formatter)
@@ -935,7 +935,7 @@ class Tools(object):
 
     def import_file(self):
 
-        if self.verbose: self.logger.info('Reading input file: ' + self.input_file)
+#         if self.verbose: self.logger.info('Reading input file: ' + self.input_file)
 
         self.input_file_vars = dict()
         numvars = 0
