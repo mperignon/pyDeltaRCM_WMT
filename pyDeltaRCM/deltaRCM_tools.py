@@ -18,12 +18,12 @@ class Tools(object):
 
     def init_logger(self):
     
-        self.logger = logging.getLogger("driver")
+        self.logger = logging.getLogger(self.label[:-1])
         self.logger.setLevel(logging.INFO)
 
         # create the logging file handler
         st = timestr = time.strftime("%Y%m%d-%H%M%S")
-        fh = logging.FileHandler("pyDeltaRCM_" + st + ".log")
+        fh = logging.FileHandler("pyDeltaRCM_" + self.label + st + ".log")
 
         formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
         fh.setFormatter(formatter)
@@ -935,7 +935,7 @@ class Tools(object):
 
     def import_file(self):
 
-        if self.verbose: self.logger.info('Reading input file: ' + self.input_file)
+#         if self.verbose: self.logger.info('Reading input file: ' + self.input_file)
 
         self.input_file_vars = dict()
         numvars = 0
@@ -989,7 +989,7 @@ class Tools(object):
         for k,v in self.input_file_vars.items():
             setattr(self, self.get_var_name(k), v)
         
-        if self.verbose: self.logger.info('Finished reading ' + str(numvars) + ' variables from input file.')
+#         if self.verbose: self.logger.info('Finished reading ' + str(numvars) + ' variables from input file.')
 
  
         
@@ -1129,11 +1129,17 @@ class Tools(object):
         if self.out_dir[-1] is not '/':
             self.prefix = self.out_dir + '/'
         
+        self.label = ''
+        
         if self.site_prefix:
-            self.prefix += self.site_prefix + '_'
+            self.label += self.site_prefix + '_'
         if self.case_prefix:
-            self.prefix += self.case_prefix + '_'
+            self.label += self.case_prefix + '_'
 
+        if len(self.label) > 0:
+            self.prefix += self.label
+        else:
+            self.label += self.prefix[:-1] + '_'
 
 
     def create_domain(self):
@@ -1329,6 +1335,7 @@ class Tools(object):
         if self.verbose:
             print '-'*20
             print 'Time = ' + str(self._time)
+            if self.verbose: self.logger.info('** Time = ' + str(self._time) + ' **')
 
 
         for iteration in range(self.itermax):
@@ -1455,7 +1462,9 @@ class Tools(object):
             
             ############ FIGURES #############
             if self.save_eta_figs:
-                    
+            
+                if self.verbose: self.logger.info('Saving fig: eta')
+                
                 plt.pcolor(self.eta)
                 plt.clim(self.clim_eta[0], self.clim_eta[1])
                 plt.colorbar()
@@ -1463,6 +1472,8 @@ class Tools(object):
                 self.save_figure(self.prefix + "eta_" + str(timestep))
             
             if self.save_stage_figs:
+            
+                if self.verbose: self.logger.info('Saving fig: stage')
                     
                 plt.pcolor(self.stage)
                 plt.colorbar()
@@ -1470,6 +1481,8 @@ class Tools(object):
                 self.save_figure(self.prefix + "stage_" + str(timestep))
                         
             if self.save_depth_figs:
+            
+                if self.verbose: self.logger.info('Saving fig: depth')
                     
                 plt.pcolor(self.depth)
                 plt.colorbar()
