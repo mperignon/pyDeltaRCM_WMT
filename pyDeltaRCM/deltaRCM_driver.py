@@ -83,7 +83,7 @@ class pyDeltaRCM(Tools):
         
 #         self.init_subsidence()
 #         self.init_stratigraphy()
-#         self.init_output_grids()
+        self.init_output_grids()
 
 
     @property

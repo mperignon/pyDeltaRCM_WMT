@@ -105,29 +105,29 @@ class Tools(object):
         if close: plt.close()
             
             
-#     def save_grids(self, var_name, var):
-#         '''
-#         Save a grid into an existing netCDF file.
-#         File should already be open (by init_output_grid) as self.output_netcdf
-#         
-#         var_name : string
-#                 The name of the variable to be saved
-#         var : object
-#                 The numpy array to be saved
-#         timestep : int
-#                 The current timestep (+1, so human readable)
-#         '''
-#         
-#         timestep = self._time
-#         
-#         try:
-#             shape = self.output_netcdf[var_name].shape
-#             self.output_netcdf[var_name][shape[0],:,:] = var
-#             
-#             self.output_netcdf['time'][shape[0]] = timestep
-#             
-#         except:
-#             self.logger.info('Error: Cannot save grid to netCDF file.')
+    def save_grids(self, var_name, var):
+        '''
+        Save a grid into an existing netCDF file.
+        File should already be open (by init_output_grid) as self.output_netcdf
+        
+        var_name : string
+                The name of the variable to be saved
+        var : object
+                The numpy array to be saved
+        timestep : int
+                The current timestep (+1, so human readable)
+        '''
+        
+        timestep = self._time
+        
+        try:
+            shape = self.output_netcdf[var_name].shape
+            self.output_netcdf[var_name][shape[0],:,:] = var
+            
+            self.output_netcdf['time'][shape[0]] = timestep
+            
+        except:
+            self.logger.info('Error: Cannot save grid to netCDF file.')
         
       
       
@@ -1246,78 +1246,78 @@ class Tools(object):
 
             
         
-#     def init_output_grids(self):
-#         '''
-#         Creates a netCDF file to store output grids
-#         Fills with default variables
-#         
-#         Overwrites an existing netcdf file with the same name
-#         '''
-#         
-#         if self.save_eta_grids or self.save_depth_grids or self.save_stage_grids or self.save_strata:
-#         
-#             if self.verbose: self.logger.info('Generating netCDF file for output grids...')
-#             
-#             directory = self.prefix
-#             filename = 'pyDeltaRCM_output.nc'
-# 
-#             if not os.path.exists(directory):
-#                 if self.verbose: self.logger.info('Creating output directory')
-#                 os.makedirs(directory)
-# 
-#             file_path = os.path.join(directory, filename)
-# 
-#             if os.path.exists(file_path):
-#                 if self.verbose: self.logger.info('*** Replaced existing netCDF file ***')
-#                 os.remove(file_path)
-# 
-#             self.output_netcdf = Dataset(file_path, 'w', format='NETCDF4_CLASSIC')
-# 
-#             self.output_netcdf.description = 'Output grids from pyDeltaRCM'
-#             self.output_netcdf.history = 'Created ' + time_lib.ctime(time_lib.time())
-#             self.output_netcdf.source = 'pyDeltaRCM / CSDMS'
-# 
-#             length = self.output_netcdf.createDimension('length', self.L)
-#             width = self.output_netcdf.createDimension('width', self.W)
-#             total_time = self.output_netcdf.createDimension('total_time', None)
-#             
-#                 
-# 
-#             x = self.output_netcdf.createVariable('x', np.float32, ('length','width'))
-#             y = self.output_netcdf.createVariable('y', np.float32, ('length','width'))
-#             time = self.output_netcdf.createVariable('time', np.int32, ('total_time',))
-# 
-#             x.units = 'meters'
-#             y.units = 'meters'
-#             time.units = 'timesteps'
-# 
-#             x[:] = self.x
-#             y[:] = self.y
-#             
-#                            
-#             if self.save_eta_grids:
-#                 eta = self.output_netcdf.createVariable('eta',
-#                                                         np.float32,
-#                                                         ('total_time','length','width'))
-#                 eta.units = 'meters'
-#                            
-#                     
-#             if self.save_stage_grids:
-#                 stage = self.output_netcdf.createVariable('stage',
-#                                                           np.float32,
-#                                                           ('total_time','length','width'))
-#                 stage.units = 'meters'
-#                            
-#                     
-#             if self.save_depth_grids:
-#                 depth = self.output_netcdf.createVariable('depth',
-#                                                           np.float32,
-#                                                           ('total_time','length','width'))
-#                 depth.units = 'meters'
-#                 
-#                 
-#                 
-#             if self.verbose: self.logger.info('Output netCDF file created.')
+    def init_output_grids(self):
+        '''
+        Creates a netCDF file to store output grids
+        Fills with default variables
+        
+        Overwrites an existing netcdf file with the same name
+        '''
+        
+        if self.save_eta_grids or self.save_depth_grids or self.save_stage_grids or self.save_strata:
+        
+            if self.verbose: self.logger.info('Generating netCDF file for output grids...')
+            
+            directory = self.prefix
+            filename = 'pyDeltaRCM_output.nc'
+
+            if not os.path.exists(directory):
+                if self.verbose: self.logger.info('Creating output directory')
+                os.makedirs(directory)
+
+            file_path = os.path.join(directory, filename)
+
+            if os.path.exists(file_path):
+                if self.verbose: self.logger.info('*** Replaced existing netCDF file ***')
+                os.remove(file_path)
+
+            self.output_netcdf = Dataset(file_path, 'w', format='NETCDF4_CLASSIC')
+
+            self.output_netcdf.description = 'Output grids from pyDeltaRCM'
+            self.output_netcdf.history = 'Created ' + time_lib.ctime(time_lib.time())
+            self.output_netcdf.source = 'pyDeltaRCM / CSDMS'
+
+            length = self.output_netcdf.createDimension('length', self.L)
+            width = self.output_netcdf.createDimension('width', self.W)
+            total_time = self.output_netcdf.createDimension('total_time', None)
+            
+                
+
+            x = self.output_netcdf.createVariable('x', np.float32, ('length','width'))
+            y = self.output_netcdf.createVariable('y', np.float32, ('length','width'))
+            time = self.output_netcdf.createVariable('time', np.int32, ('total_time',))
+
+            x.units = 'meters'
+            y.units = 'meters'
+            time.units = 'timesteps'
+
+            x[:] = self.x
+            y[:] = self.y
+            
+                           
+            if self.save_eta_grids:
+                eta = self.output_netcdf.createVariable('eta',
+                                                        np.float32,
+                                                        ('total_time','length','width'))
+                eta.units = 'meters'
+                           
+                    
+            if self.save_stage_grids:
+                stage = self.output_netcdf.createVariable('stage',
+                                                          np.float32,
+                                                          ('total_time','length','width'))
+                stage.units = 'meters'
+                           
+                    
+            if self.save_depth_grids:
+                depth = self.output_netcdf.createVariable('depth',
+                                                          np.float32,
+                                                          ('total_time','length','width'))
+                depth.units = 'meters'
+                
+                
+                
+            if self.verbose: self.logger.info('Output netCDF file created.')
 
 
 
@@ -1491,17 +1491,17 @@ class Tools(object):
                 
                 
             ########### GRIDS #############
-#             if self.save_eta_grids:
-#                 if self.verbose: self.logger.info('Saving grid: eta')
-#                 self.save_grids('eta', self.eta)
-#             
-#             if self.save_depth_grids:
-#                 if self.verbose: self.logger.info('Saving grid: depth')  
-#                 self.save_grids('depth', self.depth)
-# 
-#             if self.save_stage_grids:
-#                 if self.verbose: self.logger.info('Saving grid: stage')
-#                 self.save_grids('stage', self.stage)                
+            if self.save_eta_grids:
+                if self.verbose: self.logger.info('Saving grid: eta')
+                self.save_grids('eta', self.eta)
+            
+            if self.save_depth_grids:
+                if self.verbose: self.logger.info('Saving grid: depth')  
+                self.save_grids('depth', self.depth)
+
+            if self.save_stage_grids:
+                if self.verbose: self.logger.info('Saving grid: stage')
+                self.save_grids('stage', self.stage)                
     
     
 #     
